@@ -1,6 +1,6 @@
 const createproduct_btn = document.getElementById('createproduct_btn')
 const addToCartBtn = document.getElementById('addToCart');
-const checkout = document.getElementById('checkoutBtn')
+const clear = document.getElementById('clear')
 
 // array สำหรับเก็บสินค้า
 let products = [];
@@ -20,7 +20,7 @@ createproduct_btn.addEventListener('click',function(event) {
         price: productPrice, 
         image: productImg 
     };
-    products.push(product);
+    products.push(product); //เพิ่ม object สินเค้าเข้าไปเก็บใน arr products
 
     // สร้าง div สำหรับแสดงสินค้า
     const productDiv = document.createElement('div');
@@ -74,8 +74,7 @@ addToCartBtn.addEventListener('click', function() {
             const cartDiv = document.createElement('div');
             cartDiv.innerHTML = `
             <img src="${product.image}" width="50" height="auto">
-            ${product.name} - &#36;${product.price.toFixed(2)}
-            <button id="btnRemove" onclick="btnRemove_Cart(event)">Remove</button>`;
+            ${product.name} - $${product.price.toFixed(2)}`;
             cartList.appendChild(cartDiv);
 
             //หลังจากนั้น ให้ลบรายการสินค้าออกหลังจากกดเพิ่ม (add to cart) ไปยัง cart
@@ -86,20 +85,35 @@ addToCartBtn.addEventListener('click', function() {
         
     })
 })
-// ลบ item cart
-function btnRemove_Cart(event) {
-    event.target.parentElement.remove();
-}
+// // ลบ item cart
+// function btnRemove_Cart(event) {
+//     event.target.parentElement.remove();
+// }
 
 // รวมราคา อัตโนมัติ
 function calTotal () {
-    const total = document.getElementById('total') //div เปล่า id total
-    //รวม total price ไปในช่อง div เปล่า
-    const sumPrice = cart.reduce(function(sum, product){
+    const total = document.getElementById('total') //ดึง div เปล่า id total มา
+   
+        //หาผลรวมของสินค้าในช่อง Cart ทั้งหมด
+        const sumPrice = cart.reduce(function(sum, product){
         return sum + product.price
     },0);
-    total.innerText = `Total: ${sumPrice.toFixed(2)}`;
-
+    //รวม total price และเปลี่ยน text ในช่อง div เปล่า id total ให้แสดงเป็นผลรวมที่คำนวนมา
+    total.innerText = `Total: $${sumPrice.toFixed(2)}`;
 }
 
+function clearTotal() {
+    const total = document.getElementById('total') //ดึง div เปล่า id total มา
+    const cartList = document.getElementById('cart-list') //ดึงข้อมูล div id cart list มา
+    
+    // ลบสินค้าใน cart ทั้งหมด
+    while (cartList.firstChild) {
+        cartList.removeChild(cartList.firstChild);
+    }
+    
+    // ลบสินค้าใน array cart
+    cart = [];
+    total.innerText = `Total: $0`;
+
+}
 
