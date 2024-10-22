@@ -1,5 +1,6 @@
 const createproduct_btn = document.getElementById('createproduct_btn')
 const addToCartBtn = document.getElementById('addToCart');
+const checkout = document.getElementById('checkoutBtn')
 
 // array สำหรับเก็บสินค้า
 let products = [];
@@ -23,10 +24,11 @@ createproduct_btn.addEventListener('click',function(event) {
 
     // สร้าง div สำหรับแสดงสินค้า
     const productDiv = document.createElement('div');
+    const productIndex = products.length - 1;
 
     if (productName !== null && productPrice !== NaN && productImg !== '') {
     productDiv.innerHTML = `
-        <input type="checkbox" class="product-checkbox">
+        <input type="checkbox" class="product-checkbox" data-index="${productIndex}">
         <img src="${product.image}" width="50" height="auto">
         ${product.name} - $${product.price.toFixed(2)}
         <button id="btnRemove" onclick="btnRemove(event)">Remove</button>`;
@@ -53,28 +55,33 @@ addToCartBtn.addEventListener('click', function() {
     const checkBox = document.querySelectorAll('.product-checkbox') //ดึงข้อมูล input checkbox id มาทั้งหมดเพื่อวน loop
     const cartList = document.getElementById('cart-list') //ดึงข้อมูล div id cart list มา
 
-    checkBox.forEach((checkBox, index) => {
+    checkBox.forEach((checkBox) => {
         if(checkBox.checked) {
-            const product = products[index];
+            // ดึงค่า data-index ของสินค้ามาเก็บในตัวแปร
+            const productIndex = parseInt(checkBox.getAttribute('data-index'));
+            const product = products[productIndex]; // ค้นหาสินค้าโดยใช้เลข index data 
 
+            // filter product name ที่อยู่ใน cart ออกมาเก็บในตัวแปร เพื่อเช็คว่า มีซ้ำกันมั้ย
             const filterProduct = cart.filter(function(p) {
-                
+                return p.name === product.name;
             })
-            cart.push(product);
 
+            // เช็คว่าชื่อสินค้า มีอยู่ใน cart มั้ย
+            if (filterProduct.length === 0)
+            cart.push(product); // ถ้าไม่มี ให้เพิ่มสินค้าลงไป
+
+            //เพิ่มสินค้า ด้วยการสร้าง div ใหม่แทรกลงไปใน cartlist ที่เตรียมไว้
             const cartDiv = document.createElement('div');
             cartDiv.innerHTML = `
             <img src="${product.image}" width="50" height="auto">
-            ${product.name} - $${product.price.toFixed(2)}
+            ${product.name} - &#36;${product.price.toFixed(2)}
             <button id="btnRemove" onclick="btnRemove_Cart(event)">Remove</button>`;
             cartList.appendChild(cartDiv);
 
-            const checkAtt = checkBox.setAttribute('value', '${product.name}');
-            const hasAtt = checkAtt.hasAttribute('${product.name}')
-
+            //หลังจากนั้น ให้ลบรายการสินค้าออกหลังจากกดเพิ่ม (add to cart) ไปยัง cart
             checkBox.parentElement.remove();
-            
-            
+            // เรียก function รวมราคา อัติโนมัติ
+            calTotal ();
         }
         
     })
@@ -82,6 +89,17 @@ addToCartBtn.addEventListener('click', function() {
 // ลบ item cart
 function btnRemove_Cart(event) {
     event.target.parentElement.remove();
+}
+
+// รวมราคา อัตโนมัติ
+function calTotal () {
+    const total = document.getElementById('total') //div เปล่า id total
+    //รวม total price ไปในช่อง div เปล่า
+    const sumPrice = cart.reduce(function(sum, product){
+        return sum + product.price
+    },0);
+    total.innerText = `Total: ${sumPrice.toFixed(2)}`;
+
 }
 
 
