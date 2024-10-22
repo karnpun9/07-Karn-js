@@ -41,8 +41,6 @@ createproduct_btn.addEventListener('click',function(event) {
     document.getElementById('productName').value = '';
     document.getElementById('productPrice').value = '';
     document.getElementById('productImg').value = '';
-
-
 });
 
 // ปุ่มลบ product list
@@ -85,10 +83,6 @@ addToCartBtn.addEventListener('click', function() {
         
     })
 })
-// // ลบ item cart
-// function btnRemove_Cart(event) {
-//     event.target.parentElement.remove();
-// }
 
 // รวมราคา อัตโนมัติ
 function calTotal () {
