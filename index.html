@@ -4,9 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <title>07-Karn-JS</title>
 </head>
 <body>
+    <h1>Shopping Cart</h1>
+    <h2>Add item for selection</h2>
+
+    <form id="productForm">
+        <div id="boxProduct">
+        <label>Product Name:</label>
+        <input type="text" id="productName" name="productname">
+        </div>
+        <div id="boxPrice">
+        <label>Price:</label>
+        <input type="text" id="productPrice" name="price">
+        </div>
+        <div id="boxImage">
+        <label>Image:</label>
+        <input type="url" id="productImg" name="image">
+        </div>
+        <button id="createproduct_btn">Create Product</button>
+    </form>
+
+        <div id="dashboard">
+            <div id="product-list"></div>
+            <button id="addToCart">Add to Cart</button>
+        </div>
+
+        <section id="cart">
+            <h1>Cart</h1>
+            <div id="cart-list"></div>
+            <button id="checkoutBtn">Checkout</button>
+            <p id="total">Total: $0</p>
+        </section>
+        
+
     <script src="app.js"></script>
 </body>
 </html>
